@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import bookImg from "../assets/book.svg";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
@@ -13,12 +13,20 @@ const BookPreview = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userData = useSelector((state) => state.user.user);
 
   const handleSaving = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    if (!userData) {
+      setLoading(false);
+      toast.error("Login to Save a Book");
+      navigate(`/login?callback=/book/${id}`);
+      return;
+    }
 
     try {
       const token = localStorage.getItem("token");
