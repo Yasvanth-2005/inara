@@ -6,7 +6,7 @@ export const fetchBooks = createAsyncThunk("/books/fetchBooks", async () => {
     const res = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/books/latest`
     );
-
+    console.log(res);
     return res.data.books;
   } catch (error) {
     throw new Error("Internal Error");
