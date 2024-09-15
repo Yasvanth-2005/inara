@@ -6,7 +6,7 @@ import BookCard from "../components/BookCard";
 
 const Profile = () => {
   const userData = useSelector((state) => state.user.user);
-  const scrollRef = useRef(null); // Ref for the scrollable container
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     console.log(userData);
@@ -126,7 +126,7 @@ const Profile = () => {
       {userData && userData.savedBooks.length > 0 && (
         <>
           <h2 className="mt-8 font-semibold text-2xl">Saved Books</h2>
-          <div className="w-full flex gap-3 mt-4 items-stretch">
+          <div className="w-full flex gap-3 mt-5 items-stretch">
             <div
               onClick={handleScrollLeft}
               className="w-[50px] max-md:hidden bg-[#ecfeff] cursor-pointer hover:bg-[#cffafe] rounded flex items-center justify-center h-auto"

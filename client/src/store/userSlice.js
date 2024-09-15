@@ -41,7 +41,7 @@ const userSlice = createSlice({
     },
     removeSavedBook: (state, action) => {
       const remainingBooks = state.user.savedBooks.filter(
-        (savedBook) => savedBook !== action.payload
+        (savedBook) => savedBook._id !== action.payload
       );
       state.user.savedBooks = remainingBooks;
     },

@@ -16,6 +16,39 @@ const BookPreview = () => {
   const navigate = useNavigate();
 
   const userData = useSelector((state) => state.user.user);
+  const [bookSaved, setBookSaved] = useState(false);
+
+  useEffect(() => {
+    const checkIfBookSaved = () => {
+      if (userData) {
+        const isSaved = userData.savedBooks.some(
+          (savedBook) => savedBook._id === id
+        );
+        setBookSaved(isSaved);
+      }
+    };
+
+    checkIfBookSaved();
+  }, [userData, id]);
+
+  useEffect(() => {
+    const fetchBook = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/books/get/${id}`
+        );
+        setBook(response.data.book);
+      } catch (error) {
+        console.error("Error fetching book:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchBook();
+    }
+  }, [id]);
 
   const handleSaving = async (e) => {
     e.preventDefault();
@@ -42,6 +75,7 @@ const BookPreview = () => {
 
       dispatch(UserActions.addSavedBook(book));
       toast.success("Book Saved Successfully");
+      setBookSaved(true); // Update state to reflect the change
     } catch (error) {
       toast.error("Book Saving Failed");
     } finally {
@@ -67,53 +101,23 @@ const BookPreview = () => {
 
       dispatch(UserActions.removeSavedBook(id));
       toast.success("Book Removed Successfully");
+      setBookSaved(false);
     } catch (error) {
-      toast.error("Book Saving Failed");
+      toast.error("Book Removing Failed");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    const fetchBook = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/books/get/${id}`
-        );
-
-        setBook(response.data.book);
-      } catch (error) {
-        // error
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchBook();
-    }
-  }, [id]);
-
   if (isLoading) {
     return (
       <div className="pt-24 pb-8 px-6 max-md:px-4 max-w-[1000px] mx-auto">
         <div className="max-w-[300px]">
-          <Skeleton />
+          <Skeleton height={200} />
         </div>
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
+        <Skeleton count={6} />
         <div className="max-w-[200px]">
-          <Skeleton />
-        </div>
-        <Skeleton />
-        <div className="max-w-[150px]">
-          <Skeleton />
+          <Skeleton height={50} />
         </div>
       </div>
     );
@@ -156,21 +160,19 @@ const BookPreview = () => {
 
         <button
           className={`px-3 py-1.5 text-white rounded ${
-            userData && userData.savedBooks.includes(book._id)
+            bookSaved
               ? "bg-red-600 hover:bg-red-700"
               : "bg-blue-600 hover:bg-blue-700"
-          } `}
-          onClick={
-            userData && userData.savedBooks.includes(book._id)
-              ? handleRemoveBook
-              : handleSaving
-          }
+          }`}
+          onClick={bookSaved ? handleRemoveBook : handleSaving}
         >
-          {userData && userData.savedBooks.includes(book._id) ? (
-            <>{loading ? "Removing...." : "Remove from Saved Books"}</>
-          ) : (
-            <>{loading ? "Saving..." : "Save Now"}</>
-          )}
+          {loading
+            ? bookSaved
+              ? "Removing...."
+              : "Saving..."
+            : bookSaved
+            ? "Remove from Saved Books"
+            : "Save Now"}
         </button>
       </div>
     </div>

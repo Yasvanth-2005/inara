@@ -9,7 +9,7 @@ const BookCard = ({ id, title, image, publishion, price }) => {
           <img
             src={`${process.env.REACT_APP_BACKEND_URL}/uploads/${image}`}
             alt={title}
-            className="w-full h-auto object-cover rounded"
+            className="w-full h-auto max-h-[346px] object-cover rounded"
           />
           <div className="flex flex-col items-center">
             <h1
