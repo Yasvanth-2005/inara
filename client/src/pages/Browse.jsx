@@ -38,7 +38,7 @@ const Browse = () => {
   }, [bookError]);
 
   useEffect(() => {
-    if (booksData.length > 0) {
+    if (booksData && booksData.length > 0) {
       setFilteredBooks(booksData);
     }
   }, [booksData]);
