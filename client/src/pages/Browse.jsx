@@ -41,6 +41,7 @@ const Browse = () => {
     if (booksData && booksData.length > 0) {
       setFilteredBooks(booksData);
     }
+    console.log(booksData);
   }, [booksData]);
 
   const handleSearch = async (e) => {
