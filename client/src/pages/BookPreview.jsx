@@ -75,7 +75,7 @@ const BookPreview = () => {
 
       dispatch(UserActions.addSavedBook(book));
       toast.success("Book Saved Successfully");
-      setBookSaved(true); // Update state to reflect the change
+      setBookSaved(true);
     } catch (error) {
       toast.error("Book Saving Failed");
     } finally {
