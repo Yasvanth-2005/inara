@@ -149,13 +149,15 @@ const Register = () => {
               <p className="text-red-600 font-semibold mb-1">{error}</p>
             )}
 
-            <div className="mb-1">
+            <div
+              className="mb-1"
+              onClick={() => setTermsAccepted((prev) => !prev)}
+            >
               <input type="checkbox" id="terms" />
               <label
                 className="pl-2 text-sm cursor-pointer"
                 for="terms"
                 checked={termsAccepted}
-                onClick={() => setTermsAccepted((prev) => !prev)}
               >
                 By signing up for Inara, you are agreeing to our{" "}
                 <Link to="/sign_up_terms" className="text-blue-500">
