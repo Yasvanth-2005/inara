@@ -41,7 +41,6 @@ const Browse = () => {
     if (booksData && booksData.length > 0) {
       setFilteredBooks(booksData);
     }
-    console.log(booksData);
   }, [booksData]);
 
   const handleSearch = async (e) => {
@@ -127,6 +126,7 @@ const Browse = () => {
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredBooks.map((b) => (
             <BookCard
+              key={b._id}
               id={b._id}
               publishion={b.author.publishion}
               title={b.title}
